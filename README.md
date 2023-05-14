@@ -1,6 +1,8 @@
 # buildingshistory
 ### Introduction
 Interactive map for users to explore old buildings using the following field data. See working [demo](https://buildingshistory.co.uk/#17.71/52.958902/-1.537071/-160.1/65) 
+![image](https://github.com/buildvoc/buildingshistory/assets/76884997/17c0f007-f83a-4df6-a783-e4ea211cbb6a)
+
 * ### Routes 
 Currently using [Active Travel Infrastructure Platform (ATIP)](https://github.com/acteng/atip) exported in geojson [see examples ](https://github.com/buildvoc/buildingshistory/tree/main/geojson-examples)
 * ### Photos 
