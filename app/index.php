@@ -49,6 +49,7 @@ $buildings = file_get_contents("./3DBuildings_edited/edited3Dbuildings.geojson")
 
 	<script src="https://cdn.osmbuildings.org/4.1.1/OSMBuildings.js"></script>
 
+	<script src="https://unpkg.com/deck.gl@latest/dist.min.js"></script>
 	<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.3.0/mapbox-gl-draw.js'></script>
 	<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.3.0/mapbox-gl-draw.css' type='text/css' />
 
@@ -794,6 +795,7 @@ $buildings = file_get_contents("./3DBuildings_edited/edited3Dbuildings.geojson")
 
 			var geojsoncontents = <?php echo json_encode($filescontentarray); ?>;
 			var imgcontents = <?php echo json_encode($imgcontentarray); ?>;
+			console.log(geojsoncontents, imgcontents)
 
 
 			var pointsdata = {
@@ -846,7 +848,7 @@ $buildings = file_get_contents("./3DBuildings_edited/edited3Dbuildings.geojson")
 			}
 
 
-
+			const imgLocations = [];
 			for (let i = 0; i < imgcontents.length; i++) {
 				if (imgcontents[i] !== false) {
 					latitude = eval(imgcontents[i].GPS.GPSLatitude[0]) + (eval(imgcontents[i].GPS.GPSLatitude[1]) / 60) + (eval(imgcontents[i].GPS.GPSLatitude[2]) / 3600);
@@ -861,6 +863,9 @@ $buildings = file_get_contents("./3DBuildings_edited/edited3Dbuildings.geojson")
 					} else {
 						longitude = -longitude;
 					}
+					imgLocations.push({
+						coordinates: [longitude, latitude]
+					})
 
 					Bearingofcamera = eval(imgcontents[i].GPS.GPSImgDirection);
 					Atitudeofcamera = eval(imgcontents[i].GPS.GPSAltitude);
@@ -884,45 +889,6 @@ $buildings = file_get_contents("./3DBuildings_edited/edited3Dbuildings.geojson")
 							Altitude: eval(imgcontents[i].GPS.GPSAltitude)
 						}
 					})
-
-					map.addLayer({
-						id: 'custom_layer' + i,
-						type: 'custom',
-						renderingMode: '3d',
-						onAdd: function(map, mbxContext) {
-							window.tb = new Threebox(map, mbxContext, {
-								defaultLights: true
-							});
-							let options = {
-								type: 'gltf',
-								obj: './kamera.gltf',
-								units: 'meters',
-								scale: 0.05,
-								rotation: {
-									x: 90,
-									y: -eval(imgcontents[i].GPS.GPSImgDirection),
-									z: 0
-								},
-								adjustment: {
-									x: 0,
-									y: 0,
-									z: 0
-								},
-								anchor: 'center',
-								coords: [longitude, latitude],
-								tooltip: true
-							}
-							tb.loadObj(options, function(model) {
-								model.setCoords(options.coords);
-								tb.add(model);
-							});
-
-						},
-						render: function(gl, matrix) {
-							tb.update();
-						}
-					});
-					map.setLayerZoomRange('custom_layer' + i, 19, 30);
 
 					originalpoint = turf.point([longitude, latitude]);
 					destination = turf.destination(originalpoint, '0.003', eval(imgcontents[i].GPS.GPSImgDirection), {
@@ -1060,7 +1026,59 @@ $buildings = file_get_contents("./3DBuildings_edited/edited3Dbuildings.geojson")
 				}
 			}
 
-
+			console.log(imgLocations)
+			const ICON_MAPPING = {
+				marker: {x: 0, y: 0, width: 128, height: 128, mask: true}
+			};
+			const deckOverlay = new deck.MapboxOverlay({
+				layers: [
+					new deck.IconLayer({
+					id: 'IconLayer',
+					data: imgLocations,
+					
+					/* props from IconLayer class */
+					
+					// alphaCutoff: 0.05,
+					// billboard: true,
+					// getAngle: 0,
+					getColor: d => [Math.sqrt(d.exits), 140, 0],
+					getIcon: d => 'marker',
+					// getPixelOffset: [0, 0],
+					getPosition: d => d.coordinates,
+					getSize: d => 5,
+					iconAtlas: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png',
+					iconMapping: {
+						marker: {
+						x: 0,
+						y: 0,
+						width: 128,
+						height: 128,
+						anchorY: 128,
+						mask: true
+						}
+					},
+					// onIconError: null,
+					// sizeMaxPixels: Number.MAX_SAFE_INTEGER,
+					// sizeMinPixels: 0,
+					sizeScale: 8,
+					// sizeUnits: 'pixels',
+					// textureParameters: null,
+					
+					/* props inherited from Layer class */
+					
+					// autoHighlight: false,
+					// coordinateOrigin: [0, 0, 0],
+					// coordinateSystem: COORDINATE_SYSTEM.LNGLAT,
+					// highlightColor: [0, 0, 128, 128],
+					// modelMatrix: null,
+					// opacity: 1,
+					pickable: true,
+					// visible: true,
+					// wrapLongitude: false,
+					})
+			]
+			});
+			map.addControl(deckOverlay);
 
 			map.loadImage('./camera.png', (error, image) => {
 				if (error) throw error;
