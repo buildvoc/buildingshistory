@@ -1,0 +1,248 @@
+
+{
+    "type": "FeatureCollection",
+    "generator": "JOSM",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "CaptureScale": "1:2500",
+                "ListEntry": "1263048",
+                "hyperlink": "https://historicengland.org.uk/listing/the-list/list-entry/1263048",
+                "Name": "BARN AT GREAT CHALFIELD MANOR",
+                "ListDate": "Tue, 13 Nov 1962 00:00:00 GMT",
+                "OBJECTID": "240023",
+                "Grade": "I"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -2.20272293690,
+                    51.36800069500
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "LITTLE CHALFIELD MANOR",
+                "CaptureScale": "1:2500",
+                "ListDate": "Fri, 29 Jan 1988 00:00:00 GMT",
+                "Grade": "II",
+                "OBJECTID": "240025",
+                "ListEntry": "1263050",
+                "hyperlink": "https://historicengland.org.uk/listing/the-list/list-entry/1263050"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -2.21656453672,
+                    51.36977423496
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "OBJECTID": "227814",
+                "CaptureScale": "1:2500",
+                "ListDate": "Fri, 29 Jan 1988 00:00:00 GMT",
+                "Grade": "II",
+                "Name": "LODGE TO GREAT CHALFIELD MANOR",
+                "ListEntry": "1250755",
+                "hyperlink": "https://historicengland.org.uk/listing/the-list/list-entry/1250755"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -2.19174931671,
+                    51.37854843755
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Great Chalfield Manor entrance",
+                "barrier": "entrance"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -2.20228070000,
+                    51.36817170000
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "note": "Lots of nervous cattle. Cyclists beware",
+                "foot": "designated",
+                "highway": "bridleway",
+                "surface": "grass",
+                "designation": "public_bridleway"
+            },
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        -2.17690040000,
+                        51.36680100000
+                    ],
+                    [
+                        -2.17696040000,
+                        51.36682940000
+                    ]
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "CaptureScale": "1:2500",
+                "ListDate": "Fri, 29 Jan 1988 00:00:00 GMT",
+                "ListEntry": "1251115",
+                "Grade": "II",
+                "OBJECTID": "228174",
+                "Name": "BARN WITH MILL WHEEL TO SOUTH EAST OF LITTLE CHALFIELD MANOR",
+                "hyperlink": "https://historicengland.org.uk/listing/the-list/list-entry/1251115"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -2.21605862120,
+                    51.36910978576
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "CaptureScale": "1:2500",
+                "Grade": "II",
+                "ListDate": "Tue, 13 Nov 1962 00:00:00 GMT",
+                "hyperlink": "https://historicengland.org.uk/listing/the-list/list-entry/1250903",
+                "Name": "STABLES AT GREAT CHALFIELD MANOR",
+                "ListEntry": "1250903",
+                "OBJECTID": "227962"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -2.20310373590,
+                    51.36767098416
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "CaptureScale": "1:2500",
+                "hyperlink": "https://historicengland.org.uk/listing/the-list/list-entry/1251020",
+                "Grade": "II",
+                "ListDate": "Tue, 13 Nov 1962 00:00:00 GMT",
+                "OBJECTID": "228079",
+                "Name": "GAZEBO ON EAST SIDE OF GARDEN AT GREAT CHALFIELD MANOR",
+                "ListEntry": "1251020"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -2.20102968800,
+                    51.36725843956
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "CaptureScale": "1:2500",
+                "hyperlink": "https://historicengland.org.uk/listing/the-list/list-entry/1250904",
+                "ListDate": "Tue, 13 Nov 1962 00:00:00 GMT",
+                "Name": "CHURCH OF ALL SAINTS",
+                "OBJECTID": "227963",
+                "Grade": "I",
+                "ListEntry": "1250904"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -2.20184870054,
+                    51.36775603651
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Great Chalfield Manor",
+                "tourism": "attraction",
+                "phone": "+44 1225782239",
+                "addr:postcode": "SN12 8NH",
+                "historic": "manor",
+                "wikipedia": "en:Great Chalfield Manor",
+                "wikidata": "Q5598949",
+                "operator": "National Trust"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -2.20216420000,
+                    51.36774610000
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "barrier": "gate"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -2.17696040000,
+                    51.36682940000
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "CaptureScale": "1:2500",
+                "hyperlink": "https://historicengland.org.uk/listing/the-list/list-entry/1263049",
+                "Name": "WALLS ON SOUTH SIDE OF MOAT IN FRONT OF MANOR AND CHURCH OF ALL SAINTS",
+                "ListDate": "Fri, 29 Jan 1988 00:00:00 GMT",
+                "ListEntry": "1263049",
+                "Grade": "II",
+                "OBJECTID": "240024"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -2.20183210240,
+                    51.36788498335
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "CaptureScale": "1:2500",
+                "Name": "GREAT CHALFIELD MANOR",
+                "ListDate": "Tue, 13 Nov 1962 00:00:00 GMT",
+                "hyperlink": "https://historicengland.org.uk/listing/the-list/list-entry/1250902",
+                "ListEntry": "1250902",
+                "Grade": "I",
+                "OBJECTID": "227961"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -2.20233350538,
+                    51.36764170178
+                ]
+            }
+        }
+    ]
+}
