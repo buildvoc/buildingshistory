@@ -11,6 +11,7 @@ let mapDiv = document.getElementById('map');
 
 const apiKey = 'wCujufkC5D7bjVRTf5goHOSQSu8lLAbT';
 mapboxgl.accessToken = 'pk.eyJ1Ijoibm91ZmVsZ2hheWF0aSIsImEiOiJja3lmNWwwemEwOXNuMnhxcm9qNDF2ZXRhIn0.n0EDO6c611aAGh4r9-FwSg';
+
 var map = new mapboxgl.Map({
 	container: mapDiv,
 	style: 'https://api.os.uk/maps/vector/v1/vts/resources/styles?key=' + apiKey,
@@ -30,6 +31,7 @@ var map = new mapboxgl.Map({
 		}
 	}
 });
+
 localStorage.setItem('name', 'ejioforched');
 localStorage.getItem('name');
 
@@ -86,6 +88,17 @@ map.on('load', async () => {
 
 		</div>
 	`);
+
+	// map.addSource('mapbox-dem', {
+	// 	'type': 'raster-dem',
+	// 	'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
+	// 	'tileSize': 512,
+	// 	'maxzoom': 14
+	// });
+	// // add the DEM source as a terrain layer with exaggerated height
+	// map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
+
+
 
 	map.setFog({
 		'color': 'rgb(255, 255, 255)',
@@ -223,6 +236,38 @@ map.on('load', async () => {
 		data: parsed3dbuildings
 	});
 
+	const key = "pCmSZeag7ZywRcoEq7Qg";
+
+	const TERRAIN_IMAGE = `https://api.maptiler.com/tiles/terrain-rgb-v2/{z}/{x}/{y}.webp?key=${key}`;
+	const SURFACE_IMAGE = `https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=${key}`;
+
+	const ELEVATION_DECODER = {
+		rScaler: 655.36,
+		gScaler: 2.56,
+		bScaler: .01,
+		offset: -100,
+	};
+
+	const terrainLayer = new deck.TerrainLayer({
+		id: "terrain",
+		minZoom: 0,
+		maxZoom: 14,
+		// strategy: 'no-overlap',
+		elevationDecoder: ELEVATION_DECODER,
+		elevationData: TERRAIN_IMAGE,
+		texture: SURFACE_IMAGE,
+		wireframe: false,
+		// color: [255, 255, 255],
+	})
+
+
+	const terrainOverlay = new deck.MapboxOverlay({
+		interleaved: true,
+		layers: [terrainLayer]
+	});
+
+	map.addControl(terrainOverlay);
+
 	map.addLayer({
 		"id": "new3Dbuildings",
 		"type": "fill-extrusion",
@@ -250,7 +295,8 @@ map.on('load', async () => {
 				0,
 				16,
 				0.9
-			]
+			],
+			'fill-extrusion-opacity': 0.6
 		}
 	});
 
@@ -267,7 +313,7 @@ map.on('load', async () => {
 
 		$('#insideinfo').css('display', 'block');
 
-		$('#discardbutton').click(function() {
+		$('#discardbutton').click(function () {
 			$('#insideinfo').css('display', 'none');
 			draw.deleteAll();
 			map.setLayoutProperty('OS/TopographicArea_2/Building/1_3D', 'visibility', 'visible');
@@ -275,7 +321,7 @@ map.on('load', async () => {
 			map.setLayoutProperty('OS/TopographicArea_2/Building/1_3D_high', 'visibility', 'visible');
 		});
 
-		$('#savebutton').click(async function() {
+		$('#savebutton').click(async function () {
 			$('#insideinfo').css('display', 'none');
 			(parsed3dbuildings.features).push(draw.getAll().features[0]);
 
@@ -318,7 +364,7 @@ map.on('load', async () => {
 			}
 		});
 
-		$('#uploadbutton').click(async function() {
+		$('#uploadbutton').click(async function () {
 			$('#insideinfo').css('display', 'none');
 			(parsed3dbuildings.features).push(draw.getAll().features[0]);
 
@@ -487,13 +533,13 @@ map.on('load', async () => {
 				geometry: {
 					type: 'GeometryCollection',
 					geometries: [{
-							type: 'Point',
-							coordinates: cameraPoint
-						},
-						{
-							type: 'Point',
-							coordinates: targetPoint
-						}
+						type: 'Point',
+						coordinates: cameraPoint
+					},
+					{
+						type: 'Point',
+						coordinates: targetPoint
+					}
 					]
 				}
 			}
@@ -608,44 +654,44 @@ map.on('load', async () => {
 	}
 
 	const ICON_MAPPING = {
-		marker: {x: 0, y: 0, width: 128, height: 128, mask: true}
+		marker: { x: 0, y: 0, width: 128, height: 128, mask: true }
 	};
 
 	let iconcoordinates = exifcamera.features[0].geometry.coordinates.slice();
 	console.log(iconcoordinates);
-	
+
 	const iconLayer = new deck.IconLayer({
-	id: 'IconLayer',
-	data: imgLocations,
-	getPosition: (d) => iconcoordinates,
-	getColor: (d) => [203, 24, 226],
-	getIcon: (d) => 'marker',
-	getSize: (d) => 2,
-	getAngle: (d) => -exifcamera.features[0].properties.Bearing-10,
-	iconAtlas: './camera.png',
-	iconMapping: {
-		marker: {
-		x: 0,
-		y: 0,
-		width: 128,
-		height: 160,
-		// anchorY: 128,
-		mask: true,
+		id: 'IconLayer',
+		data: imgLocations,
+		getPosition: (d) => iconcoordinates,
+		getColor: (d) => [203, 24, 226],
+		getIcon: (d) => 'marker',
+		getSize: (d) => 2,
+		getAngle: (d) => -exifcamera.features[0].properties.Bearing - 10,
+		iconAtlas: './camera.png',
+		iconMapping: {
+			marker: {
+				x: 0,
+				y: 0,
+				width: 128,
+				height: 160,
+				// anchorY: 128,
+				mask: true,
+			},
 		},
-	},
-	sizeScale: 8,
-	billboard: true,
-	pickable: true,
-	onHover: handleHover,
+		sizeScale: 8,
+		billboard: true,
+		pickable: true,
+		onHover: handleHover,
 	});
 
 	const deckOverlay = new deck.MapboxOverlay({
-	layers: [iconLayer],
+		layers: [iconLayer],
 	});
 
 	function handleHover(info) {
 		const { x, y, object } = info;
-		console.log(info.viewport.pitch,info.viewport.bearing);
+		console.log(info.viewport.pitch, info.viewport.bearing);
 		const tooltipElement = document.getElementById('tooltip');
 		map.getCanvas().style.cursor = 'pointer';
 		if (object) {
@@ -661,20 +707,19 @@ map.on('load', async () => {
 			while (Math.abs(info.viewport.longitude - coordinates[0]) > 180) {
 				coordinates[0] += info.viewport.longitude > coordinates[0] ? 360 : -360;
 			}
-			
+
 			tooltipElement.innerHTML = tooltipContent;
 			tooltipElement.style.display = 'block';
 			tooltipElement.style.left = x + 'px';
 			tooltipElement.style.top = y + 'px';
 			tooltipElement.style.zIndex = 999;
-			
+
 		} else {
 			map.getCanvas().style.cursor = '';
 			tooltipElement.style.display = 'none';
 		}
 	}
 	map.addControl(deckOverlay);
-
 
 	map.loadImage('./camera.png', (error, image) => {
 		if (error) throw error;
@@ -757,22 +802,22 @@ map.on('load', async () => {
 		'data': linesdata,
 		'generateId': true
 	});
-	
+
 	map.addLayer({
-	'id': 'fieldofview',
-	'type': 'line',
-	'source': 'fieldview',
-	'layout': {
-	'line-join': 'round',
-	'line-cap': 'round'
-	},
-	'paint': {
-	'line-color': '#ce2d2d',
-	'line-width': 1,
-	'line-opacity': 0
-	}
+		'id': 'fieldofview',
+		'type': 'line',
+		'source': 'fieldview',
+		'layout': {
+			'line-join': 'round',
+			'line-cap': 'round'
+		},
+		'paint': {
+			'line-color': '#ce2d2d',
+			'line-width': 1,
+			'line-opacity': 0
+		}
 	});
-	
+
 	map.addLayer({
 		'id': 'fieldofview3D',
 		'type': 'fill-extrusion',
@@ -933,4 +978,3 @@ map.on('load', async () => {
 	$('#loading-map').css('display', 'none');
 
 });
-	
