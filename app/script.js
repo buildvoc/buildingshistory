@@ -87,6 +87,16 @@ map.on('load', async () => {
 		</div>
 	`);
 
+	map.addSource('mapbox-dem', {
+		'type': 'raster-dem',
+		'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
+		'tileSize': 512,
+		'maxzoom': 14
+	});
+	// add the DEM source as a terrain layer with exaggerated height
+	map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
+
+
 	map.setFog({
 		'color': 'rgb(255, 255, 255)',
 		'high-color': 'rgb(55, 187, 232)',
@@ -267,7 +277,7 @@ map.on('load', async () => {
 
 		$('#insideinfo').css('display', 'block');
 
-		$('#discardbutton').click(function() {
+		$('#discardbutton').click(function () {
 			$('#insideinfo').css('display', 'none');
 			draw.deleteAll();
 			map.setLayoutProperty('OS/TopographicArea_2/Building/1_3D', 'visibility', 'visible');
@@ -275,7 +285,7 @@ map.on('load', async () => {
 			map.setLayoutProperty('OS/TopographicArea_2/Building/1_3D_high', 'visibility', 'visible');
 		});
 
-		$('#savebutton').click(async function() {
+		$('#savebutton').click(async function () {
 			$('#insideinfo').css('display', 'none');
 			(parsed3dbuildings.features).push(draw.getAll().features[0]);
 
@@ -318,7 +328,7 @@ map.on('load', async () => {
 			}
 		});
 
-		$('#uploadbutton').click(async function() {
+		$('#uploadbutton').click(async function () {
 			$('#insideinfo').css('display', 'none');
 			(parsed3dbuildings.features).push(draw.getAll().features[0]);
 
@@ -487,13 +497,13 @@ map.on('load', async () => {
 				geometry: {
 					type: 'GeometryCollection',
 					geometries: [{
-							type: 'Point',
-							coordinates: cameraPoint
-						},
-						{
-							type: 'Point',
-							coordinates: targetPoint
-						}
+						type: 'Point',
+						coordinates: cameraPoint
+					},
+					{
+						type: 'Point',
+						coordinates: targetPoint
+					}
 					]
 				}
 			}
@@ -608,44 +618,44 @@ map.on('load', async () => {
 	}
 
 	const ICON_MAPPING = {
-		marker: {x: 0, y: 0, width: 128, height: 128, mask: true}
+		marker: { x: 0, y: 0, width: 128, height: 128, mask: true }
 	};
 
 	let iconcoordinates = exifcamera.features[0].geometry.coordinates.slice();
 	console.log(iconcoordinates);
-	
+
 	const iconLayer = new deck.IconLayer({
-	id: 'IconLayer',
-	data: imgLocations,
-	getPosition: (d) => iconcoordinates,
-	getColor: (d) => [203, 24, 226],
-	getIcon: (d) => 'marker',
-	getSize: (d) => 2,
-	getAngle: (d) => -exifcamera.features[0].properties.Bearing-10,
-	iconAtlas: './camera.png',
-	iconMapping: {
-		marker: {
-		x: 0,
-		y: 0,
-		width: 128,
-		height: 160,
-		// anchorY: 128,
-		mask: true,
+		id: 'IconLayer',
+		data: imgLocations,
+		getPosition: (d) => iconcoordinates,
+		getColor: (d) => [203, 24, 226],
+		getIcon: (d) => 'marker',
+		getSize: (d) => 2,
+		getAngle: (d) => -exifcamera.features[0].properties.Bearing - 10,
+		iconAtlas: './camera.png',
+		iconMapping: {
+			marker: {
+				x: 0,
+				y: 0,
+				width: 128,
+				height: 160,
+				// anchorY: 128,
+				mask: true,
+			},
 		},
-	},
-	sizeScale: 8,
-	billboard: true,
-	pickable: true,
-	onHover: handleHover,
+		sizeScale: 8,
+		billboard: true,
+		pickable: true,
+		onHover: handleHover,
 	});
 
 	const deckOverlay = new deck.MapboxOverlay({
-	layers: [iconLayer],
+		layers: [iconLayer],
 	});
 
 	function handleHover(info) {
 		const { x, y, object } = info;
-		console.log(info.viewport.pitch,info.viewport.bearing);
+		console.log(info.viewport.pitch, info.viewport.bearing);
 		const tooltipElement = document.getElementById('tooltip');
 		map.getCanvas().style.cursor = 'pointer';
 		if (object) {
@@ -661,13 +671,13 @@ map.on('load', async () => {
 			while (Math.abs(info.viewport.longitude - coordinates[0]) > 180) {
 				coordinates[0] += info.viewport.longitude > coordinates[0] ? 360 : -360;
 			}
-			
+
 			tooltipElement.innerHTML = tooltipContent;
 			tooltipElement.style.display = 'block';
 			tooltipElement.style.left = x + 'px';
 			tooltipElement.style.top = y + 'px';
 			tooltipElement.style.zIndex = 999;
-			
+
 		} else {
 			map.getCanvas().style.cursor = '';
 			tooltipElement.style.display = 'none';
@@ -757,22 +767,22 @@ map.on('load', async () => {
 		'data': linesdata,
 		'generateId': true
 	});
-	
+
 	map.addLayer({
-	'id': 'fieldofview',
-	'type': 'line',
-	'source': 'fieldview',
-	'layout': {
-	'line-join': 'round',
-	'line-cap': 'round'
-	},
-	'paint': {
-	'line-color': '#ce2d2d',
-	'line-width': 1,
-	'line-opacity': 0
-	}
+		'id': 'fieldofview',
+		'type': 'line',
+		'source': 'fieldview',
+		'layout': {
+			'line-join': 'round',
+			'line-cap': 'round'
+		},
+		'paint': {
+			'line-color': '#ce2d2d',
+			'line-width': 1,
+			'line-opacity': 0
+		}
 	});
-	
+
 	map.addLayer({
 		'id': 'fieldofview3D',
 		'type': 'fill-extrusion',
@@ -933,4 +943,3 @@ map.on('load', async () => {
 	$('#loading-map').css('display', 'none');
 
 });
-	
